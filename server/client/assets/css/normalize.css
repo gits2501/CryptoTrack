@@ -413,37 +413,3 @@ table {
 p {
   margin:0;
 }
-
-html {
-  height: 100%;
-}
-body {
-  height: 100%;
-  background-color: #333333;
-}
-
-
-.upper {
-}
-
-.heading-wrapp{
-  border-bottom:2px solid #6ebf62;
-}
-.heading {
-  color: white;
-  font-size: 3.5em; 
-  text-align: right;
-  padding: 5%;
-}
-
-.crypto-track-wrapp{
-   border:2px solid gray;
-   width:80%;
-   background-color: #555555;
-   margin: 2% auto;
-}
-
-.field-name {
-   display: inline-block;
-   width: 16%;
-}
