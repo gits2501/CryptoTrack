@@ -1,0 +1,22 @@
+{
+  "name": "crypto-track-client",
+  "version": "0.1.0",
+  "description": "Client for CryptoTrack App built with AngularJS",
+  "scripts": {
+    "build": "gulp build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0-beta.2",
+    "gulp-concat": "^2.6.1"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/angularjs-in-action/angello.git"
+  }
+}

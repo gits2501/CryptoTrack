@@ -4,6 +4,8 @@ require('dotenv').config();                // safely add coinmarketcap API key t
 const express = require('express');
 const requestp = require('request-promise');
 const app = express();
+ console.log(__dirname + '/client');
+app.use(express.static('.'));
 
 
 let crypto_cache = '';                       // used for caching coinmarketcap response data 
@@ -71,6 +73,25 @@ const allInfoOptions = {                //  set api request options for '/info' 
 
   // https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest
 }
+
+//  -----------------------  CONFIG
+/*
+app.get('/client/assets/css/crypto-track.css', function(req, res){  // serves .css file for app
+     console.log('browser requested css file');
+
+     res.set({
+         'content-type': 'text/css'
+     })
+
+     res.sendFile('client/assets/css/crypto-track.css',{ root: __dirname });
+})
+*/
+app.get('/', function(req, res){
+
+     res.sendFile('index.html', {root: __dirname})
+})
+
+// ------------------------
 
 app.get('/listing', function getListing(req, res) {
      if(typeof crypto_cache === "object")
