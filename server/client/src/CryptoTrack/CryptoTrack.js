@@ -1,14 +1,14 @@
-var portfolio = angular.module('CryptoTrack', [
+var cryptoTrack = angular.module('CryptoTrack', [
     'ngAnimate',
     'ngRoute',
     'ngMessages',
     'CryptoTrack.Main',
 ])
 
-portfolio.config(function($routeProvider){
+CryptoTrack.config(function($routeProvider){
    
       $routeProvider
-        .when('/', {    // root will point to page with full page cude animation
+        .when('/', {  
 
            templateUrl:  'client/src/CryptoTrack/Main/tmpl/cryptoTrack.html',
            controller:   'MainController',

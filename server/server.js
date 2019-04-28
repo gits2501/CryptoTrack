@@ -4,34 +4,12 @@ require('dotenv').config();                // safely add coinmarketcap API key t
 const express = require('express');
 const requestp = require('request-promise');
 const app = express();
- console.log(__dirname + '/client');
-app.use(express.static('.'));
+
+app.use(express.static('.'));                // this needs to go, head trouble setting public folders
 
 
 let crypto_cache = '';                       // used for caching coinmarketcap response data 
 let cache_interval = 0;                      // interval for getting data for cache
-
-const getCryptoData = function (){           // gets data from coinmarketcap 
-
-   setTimeout(function(){
-
-       process.nextTick(function cacheData(){
-
-            requestp(listingOptions)
-            .then(function(crypto_data){
-                   console.log("crypto data: \n", crypto_data)
-                   crypto_cache = crypto_data;                  // put data we got to cache                    
-            }).catch(function(err){
-                  console.log('API call error:', err.message);
-            }); 
-       })
-
-   }, cache_interval)                     // first we go for data ASAP (cache_interval = 0)
-   
-  cache_interval = 3600                   // one hour - not to waste free plan api points (will be set to 1min)
-}
-
-//getCryptoData();
 
 const listingOptions = {                //  set api request options for '/listings/latest' endpoint
 
@@ -52,6 +30,36 @@ const listingOptions = {                //  set api request options for '/listin
   json: true,
   gzip: true
 };
+
+const getCryptoData = function (){           // gets data from coinmarketcap 
+
+   let cache_interval = 1000 * 60;          // get data every one min
+
+   function cacheData(){                    // get data
+
+            requestp(listingOptions)
+            .then(function(crypto_data){
+                   console.log("crypto data: \n", crypto_data)
+                   crypto_cache = crypto_data;                  // put data we got to cache                    
+            }).catch(function(err){
+                  console.log('API call error:', err.message);
+            }); 
+   }
+
+   cacheData();
+
+   setInterval(function(){
+
+       process.nextTick(cacheData);
+
+   }, cache_interval)                     // first we go for data ASAP (cache_interval = 0)
+   
+                      // one hour - not to waste free plan api points (will be set to 1min)
+}
+
+getCryptoData();                        
+
+
 
 
    
@@ -74,23 +82,15 @@ const allInfoOptions = {                //  set api request options for '/info' 
   // https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest
 }
 
-//  -----------------------  CONFIG
-/*
-app.get('/client/assets/css/crypto-track.css', function(req, res){  // serves .css file for app
-     console.log('browser requested css file');
 
-     res.set({
-         'content-type': 'text/css'
-     })
-
-     res.sendFile('client/assets/css/crypto-track.css',{ root: __dirname });
-})
-*/
 app.get('/', function(req, res){
 
      res.sendFile('index.html', {root: __dirname})
 })
-
+app.get('/details', function(req, res){
+    
+     res.sendFile('index.html', {root: __dirname})
+})
 // ------------------------
 
 app.get('/listing', function getListing(req, res) {
@@ -102,7 +102,7 @@ app.get('/listing', function getListing(req, res) {
 })
 
 app.get('/all', function getAllInfo(req, res){
-    let crypto_id = 1 // testing crypto id 1 , will be 'req.query.id';
+    let crypto_id = req.query.id || 1 // testing crypto id 1 , will be 'req.query.id';
     
     allInfoOptions.qs.id = crypto_id;   // set id we got from client request
 

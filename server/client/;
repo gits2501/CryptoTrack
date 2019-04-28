@@ -1,0 +1,109 @@
+
+
+angular.module('CryptoTrack.Main',[]);
+
+let CryptoTrack = angular.module('CryptoTrack', [
+    'ngAnimate',
+    'ngRoute',
+    'ngMessages',
+    'CryptoTrack.Main',
+])
+
+CryptoTrack.config(function($routeProvider){
+   
+      $routeProvider
+        .when('/', {    // root will point to page with full page cude animation
+
+           templateUrl:  'client/src/CryptoTrack/Main/tmpl/cryptoTrack.html',
+           controller:   'MainController',
+           controllerAs: 'main'
+        })
+})
+
+angular.module('CryptoTrack.Main')
+ .controller('MainController', function(){
+      
+     let mainCtrl = this;
+     
+ })
+ .value('CRYPTO_DATA',{ listing:'', info:''})
+
+angular.module('CryptoTrack.Main')
+ .factory('GetListingModel', function($http, ConfigureRequestService){
+
+
+     return function getListing(){
+
+          return $http(ConfigureRequestService.cryptoOptions('listing'))
+                  .then(function success(cryptoData){
+                       if(!cryptoData.data.status['error_code'])
+                           return cryptoData.data
+                   })
+                   .catch(function failure(err){
+                       console.log('getListing failed: ', err)
+                   })
+                 
+
+     }
+
+  })
+
+angular.module('CryptoTrack.Main')
+ .factory('GetCryptoListingService', function(GetListingModel){
+
+      return function getCryptoListing(){
+
+           
+
+      }
+
+ })
+
+angular.module('CryptoTrack.Main')
+.service('ConfigureRequestService', function(){
+
+      this.cryptoOptions = function(endpoint){
+         return {
+            method: "GET",
+            url:"/"+ endpoint
+         }
+      }
+
+ })
+
+angular.module('CryptoTrack.Main')
+ .directive('cryptodata', function(CRYPTO_DATA, GetListingModel){
+
+     let linker = function(scope, elem, attrs){
+         // 1 display loader       
+         // 2 get data from server
+         // 3 remove loader
+         // 4 display data from server into table
+
+         let cryptoTrack = elem; 
+         
+         scope.cryptoListing;
+
+         GetListingModel()
+         .then(function(cryptoListing){
+              scope.cryptoListing = cryptoListing.data;
+              console.log('Directive Listing', scope.cryptoListing); 
+          },)
+         
+
+     }
+    
+     let controller = function(){
+   
+         this.cryptoListing;
+     };
+
+     return {
+        restrict: 'A',
+        link: linker,
+        controller: controller
+     }
+
+ });
+
+

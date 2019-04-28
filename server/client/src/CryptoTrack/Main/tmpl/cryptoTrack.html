@@ -1,11 +1,16 @@
-<div class="crypto-track-wrapp"> 
-   <div class="crypto-fields">
-     <p class="field-name">Name</p>
-     <p class="field-name">Short Name</p>
-     <p class="field-name">$Value</p>
-     <p class="field-name">Last 24h</p>
-     <p class="field-name">Amount you own</p>
-     <p class="field-name">Value of your coin</p>
+<div class="crypto-track-wrapp" cryptodata="" ng-if="main.path=== '/'"> 
+    <ul class="crypto-fields">
+       <li class="field-name">Name</p>
+       <li class="field-name">Short Name</p>
+       <li class="field-name">$Value</p>
+       <li class="field-name">Last 24h</p>
+       <li class="field-name size20">Amount you own</p>
+       <li class="field-name">$ value of your coin</p>
+    </ul>
    </div>
+   
+</div>
+<div ng-include="" src="client/src/CryptoTrack/Main/tmpl/cryptoTrackDetails.html" cryptodetails="" ng-if="main.path === '/details'"> 
+     
    
 </div>
